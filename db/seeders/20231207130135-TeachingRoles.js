@@ -5,7 +5,7 @@ const teachingRole = [
     roleName: 'Teacher',
   },
   {
-    roleName: 'Teaching Assitant',
+    roleName: 'Teaching Assistant',
   },
 ];
 
@@ -22,6 +22,6 @@ module.exports = {
   },
 
   async down(queryInterface) {
-    await queryInterface.bulkDelete('teacherRoles', null, {});
+    await queryInterface.bulkDelete('teachingRoles', null, {});
   },
 };

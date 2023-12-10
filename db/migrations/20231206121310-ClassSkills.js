@@ -16,10 +16,10 @@ module.exports = {
         },
       },
 
-      subject_id: {
+      class_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'subjects',
+          model: 'classes',
           key: 'id',
         },
       },

@@ -19,6 +19,9 @@ module.exports = {
           key: 'id',
         },
       },
+      grade: {
+        type: Sequelize.INTEGER,
+      },
 
       created_at: {
         allowNull: false,
