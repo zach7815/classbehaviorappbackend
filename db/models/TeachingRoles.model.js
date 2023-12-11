@@ -4,10 +4,6 @@ module.exports = (sequelize, DataTypes) => {
   class TeachingRole extends Model {
     static associate(models) {
       this.hasMany(models.TeacherStudentClasses, { foreignKey: 'role_id' });
-      this.belongsToMany(models.classes, {
-        through: models.TeachingRole,
-        key: 'role_id',
-      });
     }
   }
   Student.init(

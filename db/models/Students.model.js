@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-  Teacher.init(
+  Student.init(
     {
       id: {
         type: DataTypes.INTEGER,

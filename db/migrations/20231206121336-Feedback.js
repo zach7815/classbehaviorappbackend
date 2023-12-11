@@ -16,7 +16,7 @@ module.exports = {
         },
       },
 
-      skills_id: {
+      skill_id: {
         type: Sequelize.INTEGER,
         references: {
           model: 'skills',

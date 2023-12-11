@@ -3,35 +3,35 @@
 const feedback = [
   {
     teacherStudentClasses_id: 1,
-    skills_id: 2,
+    skill_id: 2,
     skillsValue: 3,
   },
   {
     teacherStudentClasses_id: 1,
-    skills_id: 13,
+    skill_id: 13,
     skillsValue: 5,
   },
   {
     teacherStudentClasses_id: 1,
-    skills_id: 16,
+    skill_id: 16,
     skillsValue: 3,
   },
 
   {
     teacherStudentClasses_id: 7,
-    skills_id: 1,
+    skill_id: 1,
     skillsValue: 3,
   },
 
   {
     teacherStudentClasses_id: 7,
-    skills_id: 15,
+    skill_id: 15,
     skillsValue: 3,
   },
 
   {
     teacherStudentClasses_id: 7,
-    skills_id: 19,
+    skill_id: 19,
     skillsValue: 3,
   },
 ];
