@@ -1,10 +1,12 @@
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class TeacherStudentClass extends Model {
     static associate(models) {
-      this.belongsTo(models.Teachers, { foreignKey: 'teacher_id' });
-      this.belongsTo(models.Classes, { foreignKey: 'class_id' });
-      this.belongsTo(models.TeachingRoles, { foreignKey: 'role_id' });
-      this.belongsTo(models.Students, { foreignKey: 'student_id' });
+      this.belongsTo(models.teachers, { foreignKey: 'teacher_id' });
+      this.belongsTo(models.classes, { foreignKey: 'class_id' });
+      this.belongsTo(models.teachingRoles, { foreignKey: 'role_id' });
+      this.belongsTo(models.students, { foreignKey: 'student_id' });
     }
   }
   TeacherStudentClass.init(
@@ -17,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'TeacherStudentClasses', // ! model name MUST match table name
+      modelName: 'teacherStudentClasses', // ! model name MUST match table name
       underscored: true,
     }
   );

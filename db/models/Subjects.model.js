@@ -1,8 +1,10 @@
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Subject extends Model {
     static associate(models) {
-      this.hasMany(models.Classes, { foreignKey: 'skill_id' });
-      this.hasMany(models.SubjectSkills, { foreignKey: 'skill_id' });
+      this.hasMany(models.classes, { foreignKey: 'class_id' });
+      this.belongsToMany(models.subjectSkills, { through: 'subjects' });
     }
   }
   Subject.init(
@@ -16,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'skills', // ! model name MUST match table name
+      modelName: 'subjects', // ! model name MUST match table name
       underscored: true,
     }
   );

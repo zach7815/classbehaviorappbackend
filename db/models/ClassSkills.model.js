@@ -1,8 +1,9 @@
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class ClassSkill extends Model {
     static associate(models) {
-      this.belongsTo(models.Classes, { foreignKey: 'class_id' });
-      this.belongsTo(models.Skills, { foreignKey: 'skill_id' });
+      this.belongsTo(models.classes);
+      this.belongsTo(models.skills);
     }
   }
   ClassSkill.init(
@@ -11,6 +12,21 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+      },
+
+      skill_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'skills',
+          key: 'id',
+        },
+      },
+      class_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'classes',
+          key: 'id',
+        },
       },
     },
     {

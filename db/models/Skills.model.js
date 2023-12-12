@@ -1,9 +1,10 @@
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Skill extends Model {
     static associate(models) {
-      this.hasMany(models.ClassSkills, { foreignKey: 'skill_id' });
-      this.hasMany(models.SubjectSkills, { foreignKey: 'skill_id' });
-      this.belongsTo(models.Feedback, { foreignKey: 'feedback_id' });
+      this.belongsToMany(models.classes, { through: 'classSkills' });
+      this.hasMany(models.subjectSkills, { foreignKey: 'skill_id' });
+      this.belongsTo(models.feedback, { foreignKey: 'feedback_id' });
     }
   }
   Skill.init(

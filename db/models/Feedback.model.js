@@ -1,10 +1,12 @@
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Feedback extends Model {
     static associate(models) {
-      this.belongsTo(models.TeacherStudentClasses, {
+      this.belongsTo(models.teacherStudentClasses, {
         foreignKey: 'teacherStudentClasses_id',
       });
-      this.belongsTo(models.Skills, { foreignKey: 'skill_id' });
+      this.belongsTo(models.skills, { foreignKey: 'skill_id' });
     }
   }
   Feedback.init(
@@ -19,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Feedback', // ! model name MUST match table name
+      modelName: 'feedback', // ! model name MUST match table name
       underscored: true,
     }
   );
