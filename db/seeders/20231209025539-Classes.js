@@ -2,34 +2,34 @@
 
 const classes = [
   {
-    className: '5A_History',
+    class_name: '5A_History',
     subject_id: 10,
     grade: 5,
   },
 
   {
-    className: '2A_Maths',
+    class_name: '2A_Maths',
     subject_id: 1,
     grade: 2,
   },
   {
-    className: 'Maths',
+    class_name: 'Maths',
     subject_id: 1,
     grade: 3,
   },
   {
-    className: '3A_Geography',
+    class_name: '3A_Geography',
     subject_id: 9,
     grade: 3,
   },
   {
-    className: '6A_Health_Studies',
+    class_name: '6A_Health_Studies',
     subject_id: 30,
     grade: 6,
   },
 
   {
-    className: '4A_Art',
+    class_name: '4A_Art',
     subject_id: 6,
     grade: 4,
   },

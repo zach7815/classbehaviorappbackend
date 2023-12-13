@@ -16,8 +16,8 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      feedbackDate: { type: DataTypes.DATE },
-      skillsValue: { type: DataTypes.INTEGER },
+      feedback_date: { type: DataTypes.DATE },
+      skills_value: { type: DataTypes.INTEGER },
     },
     {
       sequelize,

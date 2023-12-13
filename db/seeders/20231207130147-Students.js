@@ -2,32 +2,32 @@
 
 const students = [
   {
-    firstName: 'Alice',
-    lastName: 'Johnson',
+    first_name: 'Alice',
+    last_name: 'Johnson',
   },
   {
-    firstName: 'Bob',
-    lastName: 'Smith',
+    first_name: 'Bob',
+    last_name: 'Smith',
   },
   {
-    firstName: 'Charlie',
-    lastName: 'Davis',
+    first_name: 'Charlie',
+    last_name: 'Davis',
   },
   {
-    firstName: 'David',
-    lastName: 'Wilson',
+    first_name: 'David',
+    last_name: 'Wilson',
   },
   {
-    firstName: 'Emily',
-    lastName: 'Thompson',
+    first_name: 'Emily',
+    last_name: 'Thompson',
   },
   {
-    firstName: 'Ethan',
-    lastName: 'Brown',
+    first_name: 'Ethan',
+    last_name: 'Brown',
   },
   {
-    firstName: 'Grace',
-    lastName: 'Miller',
+    first_name: 'Grace',
+    last_name: 'Miller',
   },
 ];
 

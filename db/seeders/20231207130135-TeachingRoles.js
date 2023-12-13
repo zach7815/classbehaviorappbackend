@@ -2,10 +2,10 @@
 
 const teachingRole = [
   {
-    roleName: 'Teacher',
+    role_name: 'Teacher',
   },
   {
-    roleName: 'Teaching Assistant',
+    role_name: 'Teaching Assistant',
   },
 ];
 

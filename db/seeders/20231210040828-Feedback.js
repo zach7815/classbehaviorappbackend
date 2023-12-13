@@ -2,37 +2,43 @@
 
 const feedback = [
   {
-    teacherStudentClasses_id: 1,
+    teacher_student_classes_id: 1,
     skill_id: 2,
-    skillsValue: 3,
+    skills_value: 3,
+    feedback_date: new Date(),
   },
   {
-    teacherStudentClasses_id: 1,
+    teacher_student_classes_id: 1,
     skill_id: 13,
-    skillsValue: 5,
+    skills_value: 5,
+    feedback_date: new Date(),
   },
   {
-    teacherStudentClasses_id: 1,
+    teacher_student_classes_id: 1,
     skill_id: 16,
-    skillsValue: 3,
+    skills_value: 3,
+    feedback_date: new Date(),
   },
 
   {
-    teacherStudentClasses_id: 7,
+    teacher_student_classes_id: 7,
     skill_id: 1,
-    skillsValue: 3,
+    skills_value: 3,
+    feedback_date: new Date(),
   },
 
   {
-    teacherStudentClasses_id: 7,
+    teacher_student_classes_id: 7,
     skill_id: 15,
-    skillsValue: 3,
+    skills_value: 3,
+    feedback_date: new Date(),
   },
 
   {
-    teacherStudentClasses_id: 7,
+    teacher_student_classes_id: 7,
     skill_id: 19,
-    skillsValue: 3,
+    skills_value: 3,
+    feedback_date: new Date(),
   },
 ];
 

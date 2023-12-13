@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      className: { type: DataTypes.STRING(255) },
+      class_name: { type: DataTypes.STRING(255) },
       grade: { type: DataTypes.INTEGER },
     },
     {

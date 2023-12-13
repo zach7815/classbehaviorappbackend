@@ -4,11 +4,11 @@ class TeacherController {
   }
   createClass = async (req, res) => {
     try {
-      const { className, subjectId, grade } = req.body;
+      const { class_name, subject_id, grade } = req.body;
 
       const classToAdd = {
-        class_name: className,
-        subject_id: subjectId,
+        class_name: class_name,
+        subject_id: subject_id,
         grade: grade,
       };
       const newClass = await this.db.classes.create(classToAdd);

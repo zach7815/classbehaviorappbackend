@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      subjectName: { type: DataTypes.STRING(255) },
+      subject_name: { type: DataTypes.STRING(255) },
     },
     {
       sequelize,

@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      roleName: { type: DataTypes.STRING(255) },
+      role_name: { type: DataTypes.STRING(255) },
     },
     {
       sequelize,

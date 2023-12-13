@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      skillName: { type: DataTypes.STRING(255) },
+      skill_name: { type: DataTypes.STRING(255) },
     },
     {
       sequelize,

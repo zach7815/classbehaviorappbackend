@@ -7,8 +7,9 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
+        unique: true,
       },
-      subjectName: {
+      subject_name: {
         type: Sequelize.STRING,
       },
 

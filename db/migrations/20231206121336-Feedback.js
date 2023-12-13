@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      teacherStudentClasses_id: {
+      teacher_student_classes_id: {
         type: Sequelize.INTEGER,
         references: {
           model: 'teacherStudentClasses',
@@ -24,7 +24,11 @@ module.exports = {
         },
       },
 
-      skillsValue: {
+      feedback_date: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      skills_value: {
         type: Sequelize.INTEGER,
       },
 
