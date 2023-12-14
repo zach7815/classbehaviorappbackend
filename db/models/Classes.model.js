@@ -3,7 +3,10 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Class extends Model {
     static associate(models) {
-      this.belongsToMany(models.skills, { through: 'classSkills' });
+      this.hasMany(models.classSkills, {
+        foreignKey: 'class_id',
+        as: 'skills',
+      });
       this.hasMany(models.subjects, { foreignKey: 'subject_id' });
       this.belongsTo(models.teacherStudentClasses, { foreignKey: 'class_id' });
     }
@@ -16,6 +19,15 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
       },
       class_name: { type: DataTypes.STRING(255) },
+
+      subject_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'subjects',
+          key: 'id',
+        },
+      },
+
       grade: { type: DataTypes.INTEGER },
     },
     {

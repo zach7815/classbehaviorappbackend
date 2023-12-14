@@ -11,8 +11,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(cors());
-
 const routers = [new TeacherRouter()];
 
 routers.forEach((router) => app.use('/', router.router));

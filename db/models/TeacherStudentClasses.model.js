@@ -16,6 +16,38 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
+
+      teachers_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'teachers',
+          key: 'id',
+        },
+      },
+
+      class_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'classes',
+          key: 'id',
+        },
+      },
+
+      roles_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'teachingRoles',
+          key: 'id',
+        },
+      },
+
+      students_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'students',
+          key: 'id',
+        },
+      },
     },
     {
       sequelize,
