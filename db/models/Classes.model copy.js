@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class Class extends Model {
     static associate(models) {
       this.hasMany(models.classSkills, { as: 'classSkillsAssociation' });
-      this.belongsTo(models.subjects);
+      // this.hasMany(models.subjects);
       this.belongsToMany(models.teachers, { through: 'teacherStudentClasses' });
     }
   }
