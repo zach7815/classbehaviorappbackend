@@ -47,14 +47,43 @@ class TeacherController {
         group: 'teacher_id',
         where: { class_id: class_id },
       });
-      console.log('The current teachers are ' + currentTeachers);
+
+      const teacherIds = currentTeachers.map((teacherObject) => {
+        return teacherObject['dataValues']['teacher_id'];
+      });
+
+      console.log(currentTeachers);
+
+      const AllStudents = await this.db.teacherStudentClasses.findAll({
+        attributes: ['student_id'],
+        group: 'student_id',
+        where: { class_id: class_id },
+      });
+      const studentIds = AllStudents.map((studentObject) => {
+        return studentObject['dataValues']['student_id'];
+      });
+
+      const classPersonal = teacherIds.flatMap((teacher_id) => {
+        return studentIds.map((student_id) => {
+          return {
+            class_id: class_id,
+            teacher_id: teacher_id,
+            student_id: student_id,
+          };
+        });
+      });
+
+      console.log(console.log(classPersonal));
+
+      // console.log('The current teachers are ' + currentTeachers);
+
       //* bulk create array of objects of students - each obj - teacher_id, class_id, student_id.
       //* map over currentTeachers create array of objects
 
       const currentClass = await this.db.classes.findByPk(class_id);
-      console.log(currentClass);
-      const student = await this.db.students.findByPk(student_id);
-      console.log(student);
+      // console.log(currentClass);
+      const studentsToAdd = await this.db.students.findByPk(student_id);
+      // console.log(studentsToAdd);
       // currentClass.addStudent(student);
       return res.json(currentTeachers);
     } catch (err) {
