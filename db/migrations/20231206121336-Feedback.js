@@ -11,7 +11,7 @@ module.exports = {
       teacher_student_classes_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'teacherStudentClasses',
+          model: 'teacher_student_classes',
           key: 'id',
         },
       },

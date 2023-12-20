@@ -89,7 +89,7 @@ const teacherStudentClasses = [
 module.exports = {
   async up(queryInterface) {
     await queryInterface.bulkInsert(
-      'teacherStudentClasses',
+      'teacher_student_classes',
       teacherStudentClasses.map((teacherStudentClass) => ({
         ...teacherStudentClass,
         created_at: new Date(),

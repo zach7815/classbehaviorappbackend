@@ -23,18 +23,22 @@ class TeacherController {
     }
   };
 
-  //* bulk create array of objects of students - each obj - teacher_id, class_id, student_id.
-  //* map over currentTeachers create array of objects
   addStudentToClass = async (req, res) => {
-    const { student_id, class_id } = req.body;
+    const { student_ids, class_id } = req.body;
 
     try {
       const currentClass = await this.db.classes.findByPk(class_id);
+      const studentsExist = await Promise.all(
+        student_ids.map(async (student) => {
+          const result = await this.db.students.findByPk(student);
+          return !!result; // Convert result to boolean
+        })
+      );
+      const allStudentsExist = studentsExist.every(
+        (studentExists) => studentExists
+      );
 
-      const studentsToAdd = await this.db.students.findByPk(student_id);
-      console.log(studentsToAdd);
-
-      if (currentClass && studentsToAdd) {
+      if (currentClass && allStudentsExist) {
         const currentTeachersAndRoles =
           await this.db.teacherStudentClasses.findAll({
             attributes: ['teacher_id', 'role_id'],
@@ -51,17 +55,20 @@ class TeacherController {
           }
         );
 
-        const newStudentEntry = teacherAndRoleIds.flatMap(
-          ({ teacher_id, role_id }) => {
-            return {
-              class_id: class_id,
-              teacher_id: teacher_id,
-              role_id: role_id,
-            };
-          }
+        const newStudentEntries = teacherAndRoleIds.flatMap(
+          ({ teacher_id, role_id }) =>
+            student_ids.map((student_id) => ({
+              class_id,
+              teacher_id,
+              role_id,
+              student_id,
+            }))
         );
 
-        return res.json(currentTeachersAndRoles);
+        console.log(newStudentEntries);
+        await this.db.teacherStudentClasses.bulkCreate(newStudentEntries);
+
+        return res.status(200).json(this.db.teacherStudentClasses);
       } else {
         return res.send(' The class and/or student do not exist');
       }

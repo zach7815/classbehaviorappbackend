@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
       },
 
-      teachers_id: {
+      teacher_id: {
         type: DataTypes.INTEGER,
         references: {
           model: 'teachers',
@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
 
-      roles_id: {
+      role_id: {
         type: DataTypes.INTEGER,
         references: {
           model: 'teachingRoles',
@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
 
-      students_id: {
+      student_id: {
         type: DataTypes.INTEGER,
         references: {
           model: 'students',
