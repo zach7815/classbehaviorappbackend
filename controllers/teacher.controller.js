@@ -23,7 +23,21 @@ class TeacherController {
     }
   };
 
-  addStudentToClass = async (req, res) => {
+  removeStudentsFromClass = async (req, res) => {
+    const { ids } = req.body;
+
+    try {
+      await this.db.teacherStudentClasses.destroy({
+        where: { id: ids },
+      });
+      res.status(200).json('received');
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ error: true, msg: error });
+    }
+  };
+
+  addStudentsToClass = async (req, res) => {
     const { student_ids, class_id } = req.body;
 
     try {
@@ -65,10 +79,18 @@ class TeacherController {
             }))
         );
 
-        console.log(newStudentEntries);
-        await this.db.teacherStudentClasses.bulkCreate(newStudentEntries);
+        await this.db.teacherStudentClasses.bulkCreate(newStudentEntries, {
+          fields: [
+            'class_id',
+            'teacher_id',
+            'role_id',
+            'student_id',
+            'created_at',
+            'updated_at',
+          ],
+        });
 
-        return res.status(200).json(this.db.teacherStudentClasses);
+        return res.status(200).json('students added successfully');
       } else {
         return res.send(' The class and/or student do not exist');
       }

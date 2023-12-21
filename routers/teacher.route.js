@@ -15,8 +15,12 @@ class TeacherRouter {
     this.router.post(`${this.path}/classes`, this.controller.createClass);
     this.router.post(`${this.path}/students`, this.controller.addStudent);
     this.router.post(
-      `${this.path}/addStudentToClass`,
-      this.controller.addStudentToClass
+      `${this.path}/addStudentsToClass`,
+      this.controller.addStudentsToClass
+    );
+    this.router.post(
+      `${this.path}/removeStudentsFromClass`,
+      this.controller.removeStudentsFromClass
     );
   };
 }
