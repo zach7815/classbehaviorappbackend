@@ -12,7 +12,7 @@ const teachingRole = [
 module.exports = {
   async up(queryInterface) {
     await queryInterface.bulkInsert(
-      'teachingRoles',
+      'teaching_roles',
       teachingRole.map((role) => ({
         ...role,
         created_at: new Date(),
@@ -22,6 +22,6 @@ module.exports = {
   },
 
   async down(queryInterface) {
-    await queryInterface.bulkDelete('teachingRoles', null, {});
+    await queryInterface.bulkDelete('teaching_roles', null, {});
   },
 };
