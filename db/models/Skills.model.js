@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
         through: models.classSkills,
         as: 'skillClassesAssociation',
       });
-      this.hasMany(models.subjectSkills);
-      this.belongsTo(models.feedback);
+      this.hasMany(models.subjectSkills, { foreignKey: 'skill_id' });
+      this.hasMany(models.feedback, { foreignKey: 'skill_id' });
     }
   }
   Skill.init(

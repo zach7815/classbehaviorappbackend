@@ -13,7 +13,7 @@ class TeacherRouter {
 
   initializeRoutes = () => {
     this.router.post(`${this.path}/classes`, this.controller.createClass);
-    this.router.post(`${this.path}/students`, this.controller.addStudent);
+    this.router.post(`${this.path}/students/add`, this.controller.addStudent);
     this.router.post(
       `${this.path}/addStudentsToClass`,
       this.controller.addStudentsToClass
@@ -22,6 +22,25 @@ class TeacherRouter {
       `${this.path}/removeStudentsFromClass`,
       this.controller.removeStudentsFromClass
     );
+    this.router.get(
+      `${this.path}/students/getAll`,
+      this.controller.getAllStudents
+    );
+    this.router.get(`${this.path}/getAll`, this.controller.getAllTeachers);
+    this.router.get(`${this.path}/skills/getAll`, this.controller.getAllSkills);
+    this.router.get(
+      `${this.path}/subjects/getAll`,
+      this.controller.getAllSubjects
+    );
+    this.router.get(
+      `${this.path}/subjectSkills/getAll`,
+      this.controller.getAllSubjectSkills
+    );
+    this.router.get(
+      `${this.path}/teachingRoles/getAll`,
+      this.controller.getAllTeachingRoles
+    );
   };
 }
+
 module.exports = TeacherRouter;

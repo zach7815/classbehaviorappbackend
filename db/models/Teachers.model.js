@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       first_name: { type: DataTypes.STRING(255) },
       last_name: { type: DataTypes.STRING(255) },
-      email: {
+      email_address: {
         type: DataTypes.STRING(255),
         // * added validation
         validate: {

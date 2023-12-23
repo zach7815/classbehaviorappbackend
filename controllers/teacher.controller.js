@@ -3,9 +3,8 @@ class TeacherController {
     this.db = db;
   }
 
-  giveStudentsFeedback = async (req, res) => {
-    // the
-  };
+  // ! To Do
+  giveStudentsFeedback = async (req, res) => {};
 
   addStudent = async (req, res) => {
     try {
@@ -22,6 +21,8 @@ class TeacherController {
       res.status(500).json(error);
     }
   };
+
+  // * classroom management Methods
 
   removeStudentsFromClass = async (req, res) => {
     const { ids } = req.body;
@@ -100,15 +101,6 @@ class TeacherController {
     }
   };
 
-  getAllStudents = async (req, res) => {
-    const AllStudents = await this.db.teacherStudentClasses.findAll({
-      attributes: ['student_id'],
-      group: 'student_id',
-
-      where: { class_id: class_id },
-    });
-  };
-
   createClass = async (req, res) => {
     try {
       const { class_name, subject_id, grade } = req.body;
@@ -123,6 +115,61 @@ class TeacherController {
     } catch (error) {
       console.log(error);
       res.status(500).json(error);
+    }
+  };
+  //* GetAll Methods from each table
+
+  getAllStudents = async (req, res) => {
+    try {
+      const AllStudents = await this.db.students.findAll();
+      res.json(AllStudents);
+    } catch (error) {
+      res.status(400).json(`Error: ${error}`);
+    }
+  };
+
+  getAllTeachers = async (req, res) => {
+    try {
+      const AllTeachers = await this.db.teachers.findAll();
+      res.json(AllTeachers);
+    } catch (error) {
+      res.status(400).json(`Error: ${error}`);
+    }
+  };
+
+  getAllSkills = async (req, res) => {
+    try {
+      const AllSkills = await this.db.skills.findAll();
+      res.json(AllSkills);
+    } catch (error) {
+      res.status(400).json(`Error: ${error}`);
+    }
+  };
+
+  getAllSubjects = async (req, res) => {
+    try {
+      const AllSubjects = await this.db.subjects.findAll();
+      res.json(AllSubjects);
+    } catch (error) {
+      res.status(400).json(`Error: ${error}`);
+    }
+  };
+
+  getAllSubjectSkills = async (req, res) => {
+    try {
+      const AllSubjectSkills = await this.db.subjectSkills.findAll();
+      res.json(AllSubjectSkills);
+    } catch (error) {
+      res.status(400).json(`Error: ${error}`);
+    }
+  };
+
+  getAllTeachingRoles = async (req, res) => {
+    try {
+      const AllTeachingRoles = await this.db.teachingRoles.findAll();
+      res.json(AllTeachingRoles);
+    } catch (error) {
+      res.status(400).json(`Error: ${error}`);
     }
   };
 }
