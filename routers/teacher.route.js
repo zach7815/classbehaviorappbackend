@@ -33,12 +33,34 @@ class TeacherRouter {
       this.controller.getAllSubjects
     );
     this.router.get(
+      `${this.path}/classes/getAll`,
+      this.controller.getAllClasses
+    );
+    this.router.get(
       `${this.path}/subjectSkills/getAll`,
       this.controller.getAllSubjectSkills
     );
     this.router.get(
       `${this.path}/teachingRoles/getAll`,
       this.controller.getAllTeachingRoles
+    );
+    this.router.get(
+      `${this.path}/classSkills/getAll`,
+      this.controller.getAllClassSkills
+    );
+    this.router.get(
+      `${this.path}/feedback/getAll`,
+      this.controller.getAllFeedback
+    );
+
+    this.router.get(
+      `${this.path}/teacherStudentClasses/getAll`,
+      this.controller.getAllTeacherStudentClasses
+    );
+
+    this.router.get(
+      `${this.path}/class/feedback/getAll`,
+      this.controller.getClassFeedback
     );
   };
 }

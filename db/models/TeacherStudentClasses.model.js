@@ -7,6 +7,9 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.classes);
       this.belongsTo(models.students);
       this.belongsTo(models.teachingRoles, { foreignKey: 'role_id' });
+      this.hasMany(models.feedback, {
+        foreignKey: 'teacher_student_classes_id',
+      });
     }
   }
   TeacherStudentClass.init(

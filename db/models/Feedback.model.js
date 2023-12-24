@@ -3,7 +3,9 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Feedback extends Model {
     static associate(models) {
-      this.belongsTo(models.teacherStudentClasses);
+      this.belongsTo(models.teacherStudentClasses, {
+        foreignKey: 'teacher_student_classes_id',
+      });
       this.belongsTo(models.skills);
     }
   }
@@ -37,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'feedback', // ! model name MUST match table name
+      tableName: 'feedback', // Add this line
       underscored: true,
     }
   );

@@ -3,8 +3,76 @@ class TeacherController {
     this.db = db;
   }
 
-  // ! To Do
   giveStudentsFeedback = async (req, res) => {};
+
+  getClassFeedback = async (req, res) => {
+    const { class_id } = req.body;
+    const classFeedbackData = {};
+
+    try {
+      const classStudents = await this.db.teacherStudentClasses.findAll({
+        where: { class_id: class_id },
+      });
+      //  console.log(classStudents);
+
+      const classMeta = await this.db.classes.findOne({
+        where: { id: class_id },
+      });
+
+      //* gets class_info data and subject name for classData
+      const extractedClass = {
+        id: classMeta.dataValues.id,
+        class_name: classMeta.dataValues.class_name,
+        subject_id: classMeta.dataValues.subject_id,
+        subject: '',
+        grade: classMeta.dataValues.grade,
+        createdAt: classMeta.dataValues.createdAt,
+        updatedAt: classMeta.dataValues.updatedAt,
+      };
+      const subjectName = await this.db.subjects.findOne({
+        where: { id: extractedClass['subject_id'] },
+      });
+      extractedClass.subject = subjectName.dataValues.subject_name;
+      classFeedbackData.class_info = extractedClass;
+
+      //* get all class_teacher info
+
+      const classTeachers = await this.db.teacherStudentClasses.findAll({
+        attributes: ['teacher_id', 'role_id'],
+        group: ['teacher_id', 'role_id'],
+        where: { class_id: class_id },
+      });
+
+      console.log(classTeachers);
+
+      const classFeedback = await this.db.feedback.findAll({
+        where: { teacher_student_classes_id: class_id },
+      });
+
+      const extractedFeedback = classFeedback.map((feedback) => {
+        return {
+          id: feedback.dataValues.id,
+          teacher_student_classes_id:
+            feedback.dataValues.teacher_student_classes_id,
+          skill_id: feedback.dataValues.skill_id,
+          feedback_date: feedback.dataValues.feedback_date,
+          skills_value: feedback.dataValues.skills_value,
+          createdAt: feedback.dataValues.createdAt,
+          updatedAt: feedback.dataValues.updatedAt,
+          skillId: feedback.dataValues.skillId,
+        };
+      });
+
+      const totalClassFeedbackScore = extractedFeedback.reduce((ac, cv) => {
+        const skillsValue = cv.skills_value;
+        return ac + skillsValue;
+      }, 0);
+
+      res.status(200).json(classFeedback);
+    } catch (error) {
+      res.status(400).json(`Error:${error}`);
+    }
+  };
 
   addStudent = async (req, res) => {
     try {
@@ -155,10 +223,10 @@ class TeacherController {
     }
   };
 
-  getAllSubjectSkills = async (req, res) => {
+  getAllClasses = async (req, res) => {
     try {
-      const AllSubjectSkills = await this.db.subjectSkills.findAll();
-      res.json(AllSubjectSkills);
+      const AllClasses = await this.db.classes.findAll();
+      res.json(AllClasses);
     } catch (error) {
       res.status(400).json(`Error: ${error}`);
     }
@@ -168,6 +236,43 @@ class TeacherController {
     try {
       const AllTeachingRoles = await this.db.teachingRoles.findAll();
       res.json(AllTeachingRoles);
+    } catch (error) {
+      res.status(400).json(`Error: ${error}`);
+    }
+  };
+
+  getAllSubjectSkills = async (req, res) => {
+    try {
+      const AllSubjectSkills = await this.db.subjectSkills.findAll();
+      res.json(AllSubjectSkills);
+    } catch (error) {
+      res.status(400).json(`Error: ${error}`);
+    }
+  };
+
+  getAllClassSkills = async (req, res) => {
+    try {
+      const AllClassSkills = await this.db.classSkills.findAll();
+      res.json(AllClassSkills);
+    } catch (error) {
+      res.status(400).json(`Error: ${error}`);
+    }
+  };
+
+  getAllFeedback = async (req, res) => {
+    try {
+      const AllFeedback = await this.db.feedback.findAll();
+      res.json(AllFeedback);
+    } catch (error) {
+      res.status(400).json(`Error: ${error}`);
+    }
+  };
+
+  getAllTeacherStudentClasses = async (req, res) => {
+    try {
+      const AllTeacherStudentClasses =
+        await this.db.teacherStudentClasses.findAll();
+      res.json(AllTeacherStudentClasses);
     } catch (error) {
       res.status(400).json(`Error: ${error}`);
     }
