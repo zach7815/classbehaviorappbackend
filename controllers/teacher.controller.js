@@ -10,11 +10,6 @@ class TeacherController {
     const classFeedbackData = {};
 
     try {
-      const classStudents = await this.db.teacherStudentClasses.findAll({
-        where: { class_id: class_id },
-      });
-      //  console.log(classStudents);
-
       const classMeta = await this.db.classes.findOne({
         where: { id: class_id },
       });
@@ -37,38 +32,115 @@ class TeacherController {
 
       //* get all class_teacher info
 
-      const classTeachers = await this.db.teacherStudentClasses.findAll({
-        attributes: ['teacher_id', 'role_id'],
-        group: ['teacher_id', 'role_id'],
+      const classTeacherMeta = await this.db.teacherStudentClasses.findAll({
+        attributes: ['role_id', 'teacher_id'],
+        group: ['role_id', 'teacher_id'],
         where: { class_id: class_id },
       });
 
-      console.log(classTeachers);
-
-      const classFeedback = await this.db.feedback.findAll({
-        where: { teacher_student_classes_id: class_id },
+      const classTeachersIds = classTeacherMeta.map((meta) => {
+        return meta.dataValues['teacher_id'];
+      });
+      const teachingRoleIds = classTeacherMeta.map((meta) => {
+        return meta.dataValues['role_id'];
       });
 
-      const extractedFeedback = classFeedback.map((feedback) => {
+      const teacherInfo = await this.db.teachers.findAll({
+        where: {
+          id: classTeachersIds,
+        },
+      });
+      const RoleInfo = await this.db.teachingRoles.findAll({
+        where: {
+          id: teachingRoleIds,
+        },
+      });
+
+      //* creates Array of class teacher info
+      const Teachers = teacherInfo.map((teacher, index) => {
         return {
-          id: feedback.dataValues.id,
-          teacher_student_classes_id:
-            feedback.dataValues.teacher_student_classes_id,
-          skill_id: feedback.dataValues.skill_id,
-          feedback_date: feedback.dataValues.feedback_date,
-          skills_value: feedback.dataValues.skills_value,
-          createdAt: feedback.dataValues.createdAt,
-          updatedAt: feedback.dataValues.updatedAt,
-          skillId: feedback.dataValues.skillId,
+          first_name: teacher.dataValues.first_name,
+          last_name: teacher.dataValues.last_name,
+          email_address: teacher.dataValues.email_address,
+          id: teacher.dataValues.id,
+          role_id: classTeacherMeta[index]['dataValues']['role_id'],
+          role_name: RoleInfo[index][`dataValues`][`role_name`],
         };
       });
 
-      const totalClassFeedbackScore = extractedFeedback.reduce((ac, cv) => {
-        const skillsValue = cv.skills_value;
-        return ac + skillsValue;
-      }, 0);
+      classFeedbackData.Teachers = Teachers;
 
-      res.status(200).json(classFeedback);
+      //* get all students
+
+      // const classStudentsInfo = await this.db.teacherStudentClasses.findAll({
+      //   attributes: ['student_id'],
+      //   group: ['student_id'],
+      //   where: { class_id: class_id },
+      // });
+
+      // const extractedStudentIds = classStudentsInfo.map((student) => {
+      //   return student.dataValues.student_id;
+      // });
+
+      // const classStudents = await this.db.students.findAll({
+      //   where: {
+      //     id: extractedStudentIds,
+      //   },
+      // });
+
+      // const classFeedback = await this.db.feedback.findAll({
+      //   where: { teacher_student_classes_id: class_id },
+      // });
+
+      // const students = JSON.parse(JSON.stringify(classStudents));
+
+      // const extractedFeedback = classFeedback.map((feedback) => {
+      //   return {
+      //     id: feedback.dataValues.id,
+      //     teacher_student_classes_id:
+      //       feedback.dataValues.teacher_student_classes_id,
+      //     skill_id: feedback.dataValues.skill_id,
+      //     feedback_date: feedback.dataValues.feedback_date,
+      //     skills_value: feedback.dataValues.skills_value,
+      //     createdAt: feedback.dataValues.createdAt,
+      //     updatedAt: feedback.dataValues.updatedAt,
+      //     skillId: feedback.dataValues.skillId,
+      //   };
+      // });
+
+      // console.log(extractedFeedback);
+
+      const feedback = await this.db.feedback.findAll({
+        where: { teacher_student_classes_id: 1 },
+        include: [
+          {
+            model: this.db.teacherStudentClasses,
+            include: [
+              {
+                model: this.db.students,
+                attributes: [
+                  'id',
+                  'first_name',
+                  'last_name',
+                  'createdAt',
+                  'updatedAt',
+                ],
+              },
+            ],
+          },
+        ],
+
+        attributes: ['teacher_student_classes_id', 'skill_id', 'feedback_date'],
+      });
+
+      console.log(feedback);
+
+      // const totalClassFeedbackScore = extractedFeedback.reduce((ac, cv) => {
+      //   const skillsValue = cv.skills_value;
+      //   return ac + skillsValue;
+      // }, 0);
+
+      res.status(200).json(feedback);
     } catch (error) {
       res.status(400).json(`Error:${error}`);
     }
