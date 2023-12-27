@@ -69,6 +69,7 @@ class TeacherRouter {
     );
     this.router.post(`${this.path}/skills/add`, this.controller.createSkill);
     this.router.post(`${this.path}/add`, this.controller.addTeacher);
+    this.router.put(`${this.path}/skills/update`, this.controller.updateSkill);
   };
 }
 

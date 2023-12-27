@@ -462,5 +462,28 @@ class TeacherController {
       res.status(400).json(`unable to add a teacher due to: ${error}`);
     }
   };
+
+  updateSkill = async (req, res) => {
+    const { id, skillName } = req.body;
+
+    try {
+      await this.db.skills.update(
+        {
+          skill_name: skillName,
+        },
+        {
+          where: { id: id },
+          fields: ['skill_name'],
+        }
+      );
+
+      const updatedRow = await this.db.skills.findByPk(id);
+      res.status(200).json(updatedRow);
+    } catch (error) {
+      res
+        .status(400)
+        .json(`error unable to update ${id} in skills table, error: ${error}`);
+    }
+  };
 }
 module.exports = TeacherController;
