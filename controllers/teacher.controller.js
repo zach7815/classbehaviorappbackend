@@ -24,8 +24,6 @@ class TeacherController {
         skill_id: skill_id,
         feedback_date: new Date(),
         skills_value: skill_value,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
       await this.db.feedback.create(newFeedback);
@@ -433,6 +431,39 @@ class TeacherController {
       res.json(AllTeacherStudentClasses);
     } catch (error) {
       res.status(400).json(`Error: ${error}`);
+    }
+  };
+
+  createSkill = async (req, res) => {
+    const { skillName } = req.body;
+    try {
+      const newSkill = {
+        skill_name: skillName,
+      };
+      await this.db.skills.create(newSkill);
+      res.status(200).json(' new skill successfully added');
+    } catch (error) {
+      res.status(400).json(`failed to add due to: ${error}`);
+    }
+  };
+
+  addTeacher = async (req, res) => {
+    const { firstName, lastName, emailAddress } = req.body;
+
+    try {
+      const newTeacher = {
+        first_name: firstName,
+        last_name: lastName,
+        email_address: emailAddress,
+      };
+
+      console.log(newTeacher);
+
+      await this.db.teachers.create(newTeacher);
+
+      res.status(200).json('teacher successfully added');
+    } catch (error) {
+      res.status(400).json(`unable to add a teacher due to: ${error}`);
     }
   };
 }
