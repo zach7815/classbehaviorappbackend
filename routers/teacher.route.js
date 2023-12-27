@@ -62,6 +62,11 @@ class TeacherRouter {
       `${this.path}/class/feedback/getAll`,
       this.controller.getClassFeedback
     );
+
+    this.router.post(
+      `${this.path}/class/feedback/giveFeedback`,
+      this.controller.giveStudentsFeedback
+    );
   };
 }
 

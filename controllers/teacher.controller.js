@@ -3,7 +3,38 @@ class TeacherController {
     this.db = db;
   }
 
-  giveStudentsFeedback = async (req, res) => {};
+  giveStudentsFeedback = async (req, res) => {
+    const { student_id, class_id, teacher_id, skill_id, skill_value } =
+      req.body;
+
+    try {
+      const feedbackForeignKey = await this.db.teacherStudentClasses.findOne({
+        where: {
+          teacher_id: teacher_id,
+          class_id: class_id,
+          student_id: student_id,
+        },
+        attributes: ['id'],
+      });
+
+      const extractedFeedbackForeignKey = feedbackForeignKey.getDataValue('id');
+
+      const newFeedback = {
+        teacher_student_classes_id: extractedFeedbackForeignKey,
+        skill_id: skill_id,
+        feedback_date: new Date(),
+        skills_value: skill_value,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      await this.db.feedback.create(newFeedback);
+
+      res.status(200).json('feedback successfully added');
+    } catch (error) {
+      res.status(400).json(`Error: ${error}`);
+    }
+  };
 
   getClassFeedback = async (req, res) => {
     const { class_id } = req.body;
