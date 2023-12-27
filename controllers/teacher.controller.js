@@ -42,20 +42,15 @@ class TeacherController {
       const classMeta = await this.db.classes.findOne({
         where: { id: class_id },
       });
+      const extractedClass = classMeta.get();
 
       //* gets class_info data and subject name for classData
-      const extractedClass = {
-        id: classMeta.dataValues.id,
-        class_name: classMeta.dataValues.class_name,
-        subject_id: classMeta.dataValues.subject_id,
-        subject: '',
-        grade: classMeta.dataValues.grade,
-        createdAt: classMeta.dataValues.createdAt,
-        updatedAt: classMeta.dataValues.updatedAt,
-      };
+
       const subjectName = await this.db.subjects.findOne({
         where: { id: extractedClass['subject_id'] },
       });
+      const subjectId = subjectName.getDataValue('subject_id');
+      // console.log(subjectId);
       extractedClass.subject = subjectName.dataValues.subject_name;
       classFeedbackData.class_info = extractedClass;
 
@@ -105,6 +100,8 @@ class TeacherController {
         where: { teacher_student_classes_id: class_id },
       });
 
+      console.log(classFeedback);
+
       const extractedFeedback = classFeedback.map((feedback) => {
         return {
           id: feedback.dataValues.id,
@@ -128,6 +125,7 @@ class TeacherController {
       const extractedClassRows = classRows.map((row) => {
         return row.dataValues.id;
       });
+      console.log(extractedClassRows);
 
       const feedback = await this.db.feedback.findAll({
         where: { teacher_student_classes_id: extractedClassRows },
@@ -210,15 +208,15 @@ class TeacherController {
 
       students.forEach((student) => {
         return student.recent_feedback.forEach((feedback) => {
-          console.log(feedback);
           return (feedback.skill_name = skillsDictionary[feedback.skill_id]);
         });
       });
 
       classFeedbackData.students = students;
+      console.log(extractedFeedback);
 
-      const totalClassFeedbackScore = extractedFeedback.reduce((ac, cv) => {
-        const skillsValue = cv.skills_value;
+      const totalClassFeedbackScore = students.reduce((ac, cv) => {
+        const skillsValue = cv.net_feedback_score;
         return ac + skillsValue;
       }, 0);
 
@@ -456,8 +454,6 @@ class TeacherController {
         last_name: lastName,
         email_address: emailAddress,
       };
-
-      console.log(newTeacher);
 
       await this.db.teachers.create(newTeacher);
 
