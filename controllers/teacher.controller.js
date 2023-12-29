@@ -4,8 +4,14 @@ class TeacherController {
   }
 
   giveStudentsFeedback = async (req, res) => {
-    const { student_id, class_id, teacher_id, skill_id, skill_value } =
-      req.body;
+    const {
+      student_id,
+      class_id,
+      teacher_id,
+      skill_id,
+      feedback_comment,
+      skill_value,
+    } = req.body;
 
     try {
       const feedbackForeignKey = await this.db.teacherStudentClasses.findOne({
@@ -22,6 +28,7 @@ class TeacherController {
       const newFeedback = {
         teacher_student_classes_id: extractedFeedbackForeignKey,
         skill_id: skill_id,
+        feedback_comment: feedback_comment,
         feedback_date: new Date(),
         skills_value: skill_value,
       };
@@ -50,7 +57,7 @@ class TeacherController {
         where: { id: extractedClass['subject_id'] },
       });
       const subjectId = subjectName.getDataValue('subject_id');
-      // console.log(subjectId);
+
       extractedClass.subject = subjectName.dataValues.subject_name;
       classFeedbackData.class_info = extractedClass;
 
@@ -100,8 +107,6 @@ class TeacherController {
         where: { teacher_student_classes_id: class_id },
       });
 
-      console.log(classFeedback);
-
       const extractedFeedback = classFeedback.map((feedback) => {
         return {
           id: feedback.dataValues.id,
@@ -109,6 +114,7 @@ class TeacherController {
             feedback.dataValues.teacher_student_classes_id,
           skill_id: feedback.dataValues.skill_id,
           feedback_date: feedback.dataValues.feedback_date,
+          feedback_comment: feedback.dataValues.feedback_comment,
           skills_value: feedback.dataValues.skills_value,
           createdAt: feedback.dataValues.createdAt,
           updatedAt: feedback.dataValues.updatedAt,
@@ -151,6 +157,7 @@ class TeacherController {
           'id',
           'teacher_student_classes_id',
           'skill_id',
+          'feedback_comment',
           'skills_value',
           'feedback_date',
         ],
@@ -163,6 +170,7 @@ class TeacherController {
           skill_id: feedback.dataValues.skill_id,
           skill_name: '',
           skills_value: feedback.dataValues.skills_value,
+          feedback_comment: feedback.dataValues.feedback_comment,
           feedback_date: feedback.dataValues.feedback_date,
         };
 
@@ -489,7 +497,13 @@ class TeacherController {
   };
 
   updateFeedback = async (req, res) => {
-    const { id, teacherStudentClassesId, skillId, skillsValue } = req.body;
+    const {
+      id,
+      teacherStudentClassesId,
+      skillId,
+      feedbackComment,
+      skillsValue,
+    } = req.body;
 
     console.log(teacherStudentClassesId, skillsValue);
     try {
@@ -500,9 +514,14 @@ class TeacherController {
       if (skillId !== undefined) {
         updates.skill_id = skillId;
       }
+
+      if (feedbackComment !== undefined) {
+        updates.feedback_comment = feedbackComment;
+      }
       if (skillsValue !== undefined) {
         updates.skills_value = skillsValue;
       }
+
       console.log(updates);
 
       await this.db.feedback.update(updates, {

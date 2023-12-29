@@ -24,6 +24,10 @@ module.exports = {
         },
       },
 
+      feedback_comment: {
+        allowNull: false,
+        type: Sequelize.STRING(255),
+      },
       feedback_date: {
         allowNull: false,
         type: Sequelize.DATE,

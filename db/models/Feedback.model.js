@@ -33,6 +33,8 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
 
+      feedback_comment: { type: DataTypes.STRING(255) },
+
       feedback_date: { type: DataTypes.DATE },
       skills_value: { type: DataTypes.INTEGER },
     },
