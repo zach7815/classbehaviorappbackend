@@ -325,6 +325,8 @@ class TeacherController {
 
   createClass = async (req, res) => {
     try {
+      // add students, and skills - create class Skills table - subject will come as a string.
+
       const { class_name, subject_id, grade } = req.body;
       const classToAdd = {
         class_name: class_name,
@@ -483,6 +485,35 @@ class TeacherController {
       res
         .status(400)
         .json(`error unable to update ${id} in skills table, error: ${error}`);
+    }
+  };
+
+  updateFeedback = async (req, res) => {
+    const { id, teacherStudentClassesId, skillId, skillsValue } = req.body;
+
+    console.log(teacherStudentClassesId, skillsValue);
+    try {
+      const updates = {};
+      if (teacherStudentClassesId !== undefined) {
+        updates.teacher_student_classes_id = teacherStudentClassesId;
+      }
+      if (skillId !== undefined) {
+        updates.skill_id = skillId;
+      }
+      if (skillsValue !== undefined) {
+        updates.skills_value = skillsValue;
+      }
+      console.log(updates);
+
+      await this.db.feedback.update(updates, {
+        where: { id: id },
+      });
+
+      res.status(200).json(`Feedback with id ${id} successfully updated.`);
+    } catch (error) {
+      res
+        .status(400)
+        .json(`Feedback update failed for feedback id: ${id}: ${error}`);
     }
   };
 }
