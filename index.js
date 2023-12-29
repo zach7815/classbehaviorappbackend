@@ -7,13 +7,13 @@ const loggerMiddleware = require('./middlewares/logger.middleware');
 const TeacherRouter = require('./routers/teacher.route');
 const PORT = process.env.PORT || 3000;
 
-const jwtCheck = auth({
-  audience: process.env.AUDIENCE,
-  issuerBaseURL: process.env.ISSUERBASEURL,
-  tokenSigningAlg: process.env.TOKENSIGNINGALG,
-});
+// const jwtCheck = auth({
+//   audience: process.env.AUDIENCE,
+//   issuerBaseURL: process.env.ISSUERBASEURL,
+//   tokenSigningAlg: process.env.TOKENSIGNINGALG,
+// });
 
-app.use(jwtCheck);
+// app.use(jwtCheck);
 app.use(loggerMiddleware);
 app.use(cors());
 app.use(express.json());
