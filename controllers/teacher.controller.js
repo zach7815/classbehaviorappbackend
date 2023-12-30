@@ -335,7 +335,7 @@ class TeacherController {
     try {
       // add students, and skills - create class Skills table - subject will come as a string.
 
-      const { class_name, subject_id, grade } = req.body;
+      const { class_name, subject_id, grade, students, skills } = req.body;
       const classToAdd = {
         class_name: class_name,
         subject_id: subject_id,

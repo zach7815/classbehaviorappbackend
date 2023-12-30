@@ -12,7 +12,10 @@ class TeacherRouter {
   }
 
   initializeRoutes = () => {
-    this.router.post(`${this.path}/classes`, this.controller.createClass);
+    this.router.post(
+      `${this.path}/classes/create`,
+      this.controller.createClass
+    );
     this.router.post(`${this.path}/students/add`, this.controller.addStudent);
     this.router.post(
       `${this.path}/addStudentsToClass`,
