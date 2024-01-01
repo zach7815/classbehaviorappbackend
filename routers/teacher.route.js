@@ -66,12 +66,21 @@ class TeacherRouter {
       this.controller.getClassFeedback
     );
 
+    this.router.get(
+      `${this.path}/class/skills/getAll`,
+      this.controller.getAllClassSkills
+    );
+
     this.router.post(
       `${this.path}/class/feedback/giveFeedback`,
       this.controller.giveStudentsFeedback
     );
     this.router.post(`${this.path}/skills/add`, this.controller.createSkill);
     this.router.post(`${this.path}/add`, this.controller.addTeacher);
+    this.router.post(
+      `${this.path}/class/addTeacher`,
+      this.controller.addTeacherToClass
+    );
     this.router.put(
       `${this.path}/skills/updateOne`,
       this.controller.updateSkill

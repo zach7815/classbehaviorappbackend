@@ -236,6 +236,24 @@ class TeacherController {
     }
   };
 
+  getClassSkills = async (req, res) => {
+    const { class_id } = req.body;
+    try {
+      const classSkills = await this.db.classSkills.findAll({
+        where: { class_id: class_id },
+      });
+
+      res.status(200).json(classSkills);
+    } catch (error) {
+      res
+        .status(400)
+        .json(
+          `Error: unable to get class skills of class id: ${class_id}: ${error}`
+        );
+    }
+  };
+
+  //*add student to student table
   addStudent = async (req, res) => {
     try {
       const { first_name, last_name } = req.body;
@@ -333,9 +351,8 @@ class TeacherController {
 
   createClass = async (req, res) => {
     try {
-      // add students, and skills - create class Skills table - subject will come as a string.
-
-      const { class_name, subject_id, grade, students, skills } = req.body;
+      const { class_name, subject_id, grade, teacher_id, students, skills } =
+        req.body;
       const classToAdd = {
         class_name: class_name,
         subject_id: subject_id,
@@ -343,10 +360,70 @@ class TeacherController {
       };
 
       const newClass = await this.db.classes.create(classToAdd);
+      console.log(newClass.id);
+
+      const newTeacherStudentClassEntry = students.map((student) => {
+        return {
+          teacher_id: teacher_id,
+          class_id: newClass.id,
+          role_id: 1,
+          student_id: student,
+        };
+      });
+
+      const newClassSkillsEntry = skills.map((skill) => {
+        return {
+          skills_id: skill,
+          class_id: newClass.id,
+        };
+      });
+
+      await this.db.classSkills.bulkCreate(newClassSkillsEntry);
+
+      await this.db.teacherStudentClasses.bulkCreate(
+        newTeacherStudentClassEntry
+      );
+
       res.status(200).json(newClass);
     } catch (error) {
       console.log(error);
       res.status(500).json(error);
+    }
+  };
+
+  addTeacherToClass = async (req, res) => {
+    const { class_id, teacher_id, role_id } = req.body;
+
+    try {
+      const students = await this.db.teacherStudentClasses.findAll({
+        attributes: [`student_id`],
+        group: ['student_id'],
+        where: { class_id },
+      });
+      const studentIds = students.map(({ student_id }) => student_id);
+
+      const newTeacherStudentClassEntry = studentIds.map((student) => {
+        return {
+          teacher_id: teacher_id,
+          class_id: class_id,
+          role_id: role_id,
+          student_id: student,
+        };
+      });
+
+      await this.db.teacherStudentClasses.bulkCreate(
+        newTeacherStudentClassEntry
+      );
+
+      res.status(200).json(`successfully added ${teacher_id} to ${class_id}`);
+
+      console.log(students);
+    } catch (error) {
+      res
+        .status(400)
+        .json(
+          `error in adding teacher: ${teacher_id} to class: ${class_id}: ${error}`
+        );
     }
   };
   //* GetAll Methods from each table
