@@ -12,6 +12,7 @@ class TeacherController {
       feedback_comment,
       skill_value,
     } = req.body;
+    console.log(req);
 
     try {
       const feedbackForeignKey = await this.db.teacherStudentClasses.findOne({
@@ -42,7 +43,8 @@ class TeacherController {
   };
 
   getClassFeedback = async (req, res) => {
-    const { class_id } = req.body;
+    const { class_id } = req.query;
+    console.log(class_id);
     const classFeedbackData = {};
     try {
       const classMeta = await this.db.classes.findOne({
@@ -183,7 +185,6 @@ class TeacherController {
       classFeedbackData.classFeedbackTotal = totalClassFeedbackScore;
       res.status(200).json(classFeedbackData);
     } catch (error) {
-      console.log(error);
       res.status(400).json(`Error:${error}`);
     }
   };
@@ -217,7 +218,6 @@ class TeacherController {
       const newStudent = await this.db.students.create(studentToAdd);
       res.status(200).json(newStudent);
     } catch (error) {
-      console.log(error);
       res.status(500).json(error);
     }
   };
@@ -233,7 +233,6 @@ class TeacherController {
       });
       res.status(200).json('received');
     } catch (error) {
-      console.log(error);
       return res.status(400).json({ error: true, msg: error });
     }
   };
@@ -296,7 +295,6 @@ class TeacherController {
         return res.send(' The class and/or student do not exist');
       }
     } catch (err) {
-      console.log(err);
       return res.status(400).json({ error: true, msg: err });
     }
   };
@@ -312,7 +310,6 @@ class TeacherController {
       };
 
       const newClass = await this.db.classes.create(classToAdd);
-      console.log(newClass.id);
 
       const newTeacherStudentClassEntry = students.map((student) => {
         return {
@@ -338,7 +335,6 @@ class TeacherController {
 
       res.status(200).json(newClass);
     } catch (error) {
-      console.log(error);
       res.status(500).json(error);
     }
   };
@@ -368,8 +364,6 @@ class TeacherController {
       );
 
       res.status(200).json(`successfully added ${teacher_id} to ${class_id}`);
-
-      console.log(students);
     } catch (error) {
       res
         .status(400)
@@ -525,6 +519,45 @@ class TeacherController {
     }
   };
 
+  updateStudent = async (req, res) => {
+    const { id, first_name, last_name } = req.body;
+
+    const updatedStudent = {};
+    try {
+      if (first_name !== undefined) {
+        updatedStudent.first_name = first_name;
+      }
+      if (last_name !== undefined) {
+        updatedStudent.last_name = last_name;
+      }
+      await this.db.students.update(updatedStudent, { where: { id: id } });
+      res.status(200).json('success');
+    } catch (error) {
+      res.status(400).json(`update failed: ${error}`);
+    }
+  };
+
+  updateTeacher = async (req, res) => {
+    const { id, first_name, last_name, email_address } = req.body;
+
+    const updatedTeacher = {};
+    try {
+      if (first_name !== undefined) {
+        updatedTeacher.first_name = first_name;
+      }
+      if (last_name !== undefined) {
+        updatedTeacher.last_name = last_name;
+      }
+      if (email_address !== undefined) {
+        updatedTeacher.email_address = email_address;
+      }
+      await this.db.teachers.update(updatedTeacher, { where: { id: id } });
+      res.status(200).json('success');
+    } catch (error) {
+      res.status(400).json(`update failed: ${error}`);
+    }
+  };
+
   updateFeedback = async (req, res) => {
     const {
       id,
@@ -534,7 +567,6 @@ class TeacherController {
       skillsValue,
     } = req.body;
 
-    console.log(teacherStudentClassesId, skillsValue);
     try {
       const updates = {};
       if (teacherStudentClassesId !== undefined) {
@@ -550,8 +582,6 @@ class TeacherController {
       if (skillsValue !== undefined) {
         updates.skills_value = skillsValue;
       }
-
-      console.log(updates);
 
       await this.db.feedback.update(updates, {
         where: { id: id },

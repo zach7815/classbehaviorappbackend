@@ -89,6 +89,11 @@ class TeacherRouter {
       `${this.path}/feedback/updateOne`,
       this.controller.updateFeedback
     );
+    this.router.put(
+      `${this.path}/students/updateOne`,
+      this.controller.updateStudent
+    );
+    this.router.put(`${this.path}/updateOne`, this.controller.updateTeacher);
   };
 }
 
