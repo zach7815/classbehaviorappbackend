@@ -322,7 +322,7 @@ class TeacherController {
 
       const newClassSkillsEntry = skills.map((skill) => {
         return {
-          skills_id: skill,
+          skill_id: skill,
           class_id: newClass.id,
         };
       });
