@@ -12,17 +12,18 @@ class TeacherController {
       feedback_comment,
       skill_value,
     } = req.body;
-    console.log(req);
 
     try {
       const feedbackForeignKey = await this.db.teacherStudentClasses.findOne({
         where: {
-          teacher_id: teacher_id,
-          class_id: class_id,
           student_id: student_id,
+          class_id: class_id,
+          teacher_id: teacher_id,
         },
         attributes: ['id'],
       });
+
+      console.log(feedbackForeignKey);
 
       const extractedFeedbackForeignKey = feedbackForeignKey.getDataValue('id');
 
@@ -44,7 +45,7 @@ class TeacherController {
 
   getClassFeedback = async (req, res) => {
     const { class_id } = req.query;
-    console.log(class_id);
+
     const classFeedbackData = {};
     try {
       const classMeta = await this.db.classes.findOne({
@@ -143,27 +144,34 @@ class TeacherController {
         ],
       });
 
-      for (const entrie of feedback) {
-        const {
-          id,
-          teacher_student_classes_id,
-          skill_id,
-          feedback_comment,
-          feedback_date,
-          skills_value,
-        } = entrie.dataValues;
-        const student = studentList.find(
-          (student) => student.id === teacher_student_classes_id
-        );
+      const feedbackList = feedback.map((feedback) => {
+        return {
+          id: feedback.dataValues.id,
+          teacher_student_class_id:
+            feedback.dataValues.teacher_student_classes_id,
+          skill_id: feedback.dataValues.skill_id,
+          feedback_comment: feedback.dataValues.feedback_comment,
+          feedback_date: feedback.dataValues.feedback_date,
+          skills_value: feedback.dataValues.skills_value,
+          student_id:
+            feedback.dataValues.teacherStudentClass.dataValues.student_id,
+        };
+      });
+
+      for (const entry of feedbackList) {
+        console.log(entry);
+        const student = studentList.find((student) => {
+          return student.id === entry.student_id;
+        });
 
         if (student) {
           const newFeedback = {
-            id,
-            teacher_student_classes_id: teacher_student_classes_id,
-            skill_id,
-            feedback_comment,
-            feedback_date: feedback_date.toString(),
-            skills_value,
+            id: entry.id,
+            teacher_student_classes_id: entry.teacher_student_class_id,
+            skill_id: entry.skill_id,
+            feedback_comment: entry.feedback_comment,
+            feedback_date: entry.feedback_date.toString(),
+            skills_value: entry.skills_value,
           };
           student.recent_feedback.push(newFeedback);
         }
